@@ -4,8 +4,8 @@ import CardF from '@/components/cards/CardF.vue'
 </script>
 
 <template>
-  <main>
-    <article id="main_contents_list">
+  <main id="main_contents">
+    <article class="main_contents_list">
       <ul class="menu_list">
         <li>
           <router-link to="/">guest</router-link>
@@ -32,17 +32,25 @@ import CardF from '@/components/cards/CardF.vue'
     <article class="main_contents_notice">
       <ul class="notice">
         <li>
-          <router-link to="/">공지사항1</router-link>
+          <router-link to="/">
+            <em>공지</em>
+            <div class="contents">공지사항입니다. @@공지사항입니다. @@공지사항입니다. @@공지사항입니다. @@공지사항입니다. @@공지사항입니다. @@공지사항입니다. @@공지사항입니다.
+              @@공지사항입니다. @@</div>
+            <div class="date">2022.08.08</div>
+          </router-link>
         </li>
         <li>
-          <router-link to="/">공지사항2</router-link>
+          <router-link to="/">
+            <em>공지</em>
+            <div class="contents">공지사항입니다.</div>
+            <div class="date">2022.08.08</div>
+          </router-link>
         </li>
       </ul>
     </article>
 
     <article class="main_contents_card">
       <h3><em>나의 닉네임</em> 30개의 글</h3>
-
       <div class="card_list">
         <CardF v-for="item of [0,1,2,3,4]" :key="item" />
       </div>

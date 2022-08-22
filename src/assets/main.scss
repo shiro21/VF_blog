@@ -124,8 +124,117 @@
   }
 
   .main_side_category {
-    
+    .category_wrap {
+      .category_top {
+        position: relative;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        > em {
+          font-size: .9rem;
+          font-weight: 700;
+          color: $main_color;
+          > img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 24px;
+            height: 100%;
+          }
+        }
+      }
+      .main_category_contents {
+        .category {
+          font-size: .8rem;
+          line-height: 2;
+          .depth1 {}
+          .depth2 {}
+          .depth_active { font-weight: 700; }
+        }
+      }
+    }
+  }
+
+  .main_side_connect {
+    width: 100%;
+    min-height: 150px;
+    border: 1px solid $color_DDD;
+    padding: .5rem;
   }
 }
 
 // Main Contents
+#main_contents::v-deep {
+  width: calc(100% - 200px);
+  .main_contents_list {
+    width: 100%;
+    height: 46px;
+    .menu_list {
+      display: flex;
+      flex-direction: row-reverse;
+      padding-top: 0.62rem;
+      > li {
+        position: relative;
+        > a {
+          display: block;
+          width: 50px;
+          text-align: center;
+        }
+        &:first-child::after { width: 0; }
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 1px;
+          height: 100%;
+          background: $color_DDD;
+        }
+      }
+    }
+  }
+
+  .main_contents_famous_say {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .main_contents_notice {
+    padding: 1rem;
+    .notice {
+      line-height: 2;
+      > li {
+        > a {
+          display: flex;
+          width: 100%;
+          justify-content: space-between;
+          > em {
+            color: $orange_color;
+            min-width: 30px;
+          }
+          .contents {
+            width: 100%;
+            padding: 0 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .date { font-size: .7rem; color: $color_7575; }
+        }
+      }
+    }
+  }
+
+  .main_contents_card {
+    width: 100%;
+    padding: 1rem;
+    > h3 {
+      font-size: .9rem;
+      > em { font-weight: 700; }
+    }
+    .card_list {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+  }
+}

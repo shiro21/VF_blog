@@ -1,11 +1,25 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+
+import store from '@/js/store'
+import { auth } from '@/js/firebase'
+
+
+
+  onMounted(() => {
+    auth.onAuthStateChanged(async user => {
+      
+      if (user.uid) loginList.value = true
+
+    })
+  })
 
   const menuList = ref(false)
   const profileList = ref(false)
+  const loginList = ref(false)
+
 
   function menu () {
-    console.log('들어옴')
     if(menuList.value === false) menuList.value = true
     else menuList.value = false
   }
@@ -27,15 +41,19 @@ function close () {
     <ul class="menu_list">
       <li>
         <a href="javascript:void(0)" @click="menu">MENU</a>
-        <div class="menu_card" v-if="menuList">
+        <div class="menu_card" v-if="menuList && loginList">
           <div class="profile">
             <img src="@/assets/image/paca.png" alt="프로필" />
           </div>
           <div class="information">
-            <div class="nickname"><em>나의 닉네임</em></div>
+            <div class="nickname"><em><router-link to="/information">나의 닉네임</router-link></em></div>
             <div class="email">shiro21@tistory</div>
-            <button>로그아웃</button>
+            <button @click="store.dispatch('logout')">로그아웃</button>
           </div>
+        </div>
+
+        <div class="menu_card" v-if="menuList && !loginList">
+          <router-link to="/login">로그인 하러가기</router-link>
         </div>
       </li>
 

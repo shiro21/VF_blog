@@ -40,22 +40,27 @@ function category () {
 
     <article class="main_side_category">
       <div class="category_wrap">
-        <h3 class="category_top" @click="category"><em>Category</em></h3>
+        <h3 class="category_top" @click="category">
+          <em>Category
+            <img src="@/assets/icons/up.svg" alt="UP" v-if="!categoryList" />
+            <img src="@/assets/icons/down.svg" alt="DOWN" v-if="categoryList" />
+          </em>
+        </h3>
 
         <div class="main_category_contents" v-if="categoryList">
           <ul class="category">
-            <li class="depth1">
-              <router-link to="/">전체보기</router-link>
+            <li class="depth1 depth_active">
+              <router-link to="/">전체보기(61)</router-link>
             </li>
             <li class="depth1">
-              <router-link to="/">일상</router-link>
+              <router-link to="/">일상(10)</router-link>
             </li>
             <hr />
             <li class="depth1">
-              <router-link to="/">뎁스1</router-link>
+              <router-link to="/">뎁스1(50)</router-link>
             </li>
             <li class="depth2">
-              <router-link to="/">뎁스2</router-link>
+              <router-link to="/">뎁스2(0)</router-link>
             </li>
           </ul>
         </div>
@@ -63,7 +68,7 @@ function category () {
     </article>
 
     <article class="main_side_connect">
-      내 자료들 github, tistory 등등
+      내 자료들 github, tistory, 포트폴리오 등등
     </article>
   </nav>
 </template>

@@ -4,7 +4,7 @@ import { } from 'vue'
 </script>
 
 <template>
-  <div class="card">
+  <div id="card_first">
     <div class="card_image">
       <img src="@/assets/image/paca.png" alt="카드 이미지 - 제목">
     </div>

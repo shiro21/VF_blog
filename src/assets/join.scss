@@ -1,0 +1,57 @@
+@import '@/assets/_color.scss';
+
+#join {}
+
+#join_contents::v-deep {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  text-align: center;
+
+  >h1 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+
+    >em {
+      font-weight: 700;
+    }
+  }
+
+  .input_wrap {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      border: 0;
+      border-bottom: 1px solid $color_7575;
+    }
+  }
+
+  .button_wrap {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    >button {
+      width: 100%;
+      height: 48px;
+      background: $main_color;
+      color: $color_FFF;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+  }
+
+  .sign_wrap {
+    text-align: right;
+
+    em {
+      color: $main_color;
+    }
+  }
+}
