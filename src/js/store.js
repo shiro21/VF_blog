@@ -18,6 +18,7 @@ export default createStore({
       state.user = user
     },
     CLEAR_USER (state) {
+      console.log('CLEAR USER')
       state.user = null
     }
   },
@@ -44,6 +45,8 @@ export default createStore({
       }
 
       commit('SET_USER', auth.currentUser)
+      localStorage.setItem('blog', auth.currentUser.uid)
+      // console.log(auth.currentUser)
 
       router.push('/')
     },
@@ -53,17 +56,20 @@ export default createStore({
 
       try {
         await createUserWithEmailAndPassword(auth, id, pass)
-
+        console.log(auth)
         const authId = auth.currentUser.uid
-        console.log(authId)
 
-        const docRef = await addDoc(collection(db, "users"), {
+        await addDoc(collection(db, "users"), {
           id: authId,
           email: id,
-          nick: nick
+          nick: nick,
+          blogName: '',
+          description: '',
+          profile: '/img/paca.f07159b0.png',
+          createdAt: new Date(),
+          isDeleted: false
         })
 
-        console.log("DocREF", docRef)
       } catch (err) {
         switch (err.code) {
           case 'auth/email-already-in-use' :
@@ -87,6 +93,7 @@ export default createStore({
       }
 
       commit('SET_USER', auth.currentUser)
+      localStorage.setItem('blog', auth.currentUser.uid)
 
       router.push('/')
     },
@@ -94,6 +101,8 @@ export default createStore({
       await signOut(auth)
 
       commit('CLEAR_USER')
+
+      localStorage.removeItem('blog')
 
       router.push('/login')
     },

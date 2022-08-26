@@ -6,7 +6,9 @@ import store from '@/js/store';
 const joinForm = ref({})
 
 const join = () => {
-  console.log(joinForm.value)
+  if(joinForm.value.pass !== joinForm.value.passConfirm || joinForm.value.pass.length < 7) {
+    return alert('비밀번호를 확인해주세요.')
+  }
   store.dispatch('join', joinForm.value)
 }
 </script>
@@ -16,13 +18,13 @@ const join = () => {
     <h1><em>회원가입</em></h1>
 
     <div class="input_wrap">
-      <input type="text" v-model="joinForm.id" placeholder="아이디를 입력해주세요." />
+      <input type="text" v-model="joinForm.id" placeholder="이메일을 입력해주세요." />
     </div>
     <div class="input_wrap">
       <input type="password" v-model="joinForm.pass" placeholder="비밀번호를 입력해주세요." />
     </div>
     <div class="input_wrap">
-      <input type="password" v-model="joinForm.pass" placeholder="비밀번호를 확인해주세요." />
+      <input type="password" v-model="joinForm.passConfirm" placeholder="비밀번호를 확인해주세요." />
     </div>
     <div class="input_wrap">
       <input type="text" v-model="joinForm.nick" placeholder="이름을 입력해주세요." />

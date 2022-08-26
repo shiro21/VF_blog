@@ -4,11 +4,16 @@ import InformationContents from '@/components/informations/InformationContents.v
 </script>
 
 <template>
-  <section id="info_section">
-    <InformationContents />
+  <section id="information">
+    <div class="container">
+      <div class="row">
+        <InformationContents />
+      </div>
+    </div>
   </section>
 </template>
 
 <style scoped lang='scss'>
+@import '@/assets/information.scss';
 
 </style>

@@ -1,19 +1,53 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-
 import store from '@/js/store'
 import { auth } from '@/js/firebase'
+import { db } from '@/js/db'
 
+import { collection, getDocs } from "firebase/firestore";
 
 
   onMounted(() => {
     auth.onAuthStateChanged(async user => {
-      
-      if (user.uid) loginList.value = true
-
+      if (user) loginList.value = true
+      else loginList.value = false
     })
   })
 
+  onMounted(async () => {
+
+    const querySnapshot = await getDocs(collection(db, "users"))
+
+    let loginData = []
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data())
+      if (doc.data().id === localStorage.getItem('blog')) {
+        if (doc.data().profile !== '') {
+          const userData = {
+            email: doc.data().email,
+            id: doc.data().id,
+            nick: doc.data().nick,
+            profile: doc.data().profile,
+            _uid: doc.id
+          }
+          loginData.push(userData)
+        } else {
+          const userData = {
+            email: doc.data().email,
+            id: doc.data().id,
+            nick: doc.data().nick,
+            profile: '/img/paca.f07159b0.png',
+            _uid: doc.id
+          }
+          loginData.push(userData)
+        }
+      }
+    });
+    user.value = loginData
+  })
+
+  const user = ref([])
   const menuList = ref(false)
   const profileList = ref(false)
   const loginList = ref(false)
@@ -43,11 +77,12 @@ function close () {
         <a href="javascript:void(0)" @click="menu">MENU</a>
         <div class="menu_card" v-if="menuList && loginList">
           <div class="profile">
-            <img src="@/assets/image/paca.png" alt="프로필" />
+            <!-- <img src="@/assets/image/paca.png" alt="프로필" /> -->
+            <img :src="user[0].profile" alt="프로필" />
           </div>
           <div class="information">
-            <div class="nickname"><em><router-link to="/information">나의 닉네임</router-link></em></div>
-            <div class="email">shiro21@tistory</div>
+            <div class="nickname"><em><router-link :to="`/information/${user[0]._uid}`">{{user[0].nick}}</router-link></em></div>
+            <div class="email">{{user[0].email}}</div>
             <button @click="store.dispatch('logout')">로그아웃</button>
           </div>
         </div>
@@ -62,7 +97,7 @@ function close () {
         <div class="menu_card" v-if="profileList">
           <ul>
             <li>
-              <router-link to="/">글쓰기</router-link>
+              <router-link to="/editor">글쓰기</router-link>
             </li>
             <li>
               <router-link to="/">관리</router-link>
