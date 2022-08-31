@@ -1,12 +1,65 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, defineProps, defineEmits } from 'vue'
+import { largeCategory, smallCategory } from '@/js/manager'
+import { getDocs } from '@firebase/firestore';
 
-const categoryList = ref(true)
+  const props = defineProps(['user', 'msg'])
+  const user = ref({})
 
-function category () {
-  if (categoryList.value === false) categoryList.value = true
-  else categoryList.value = false
-}
+  const dataLoad = ref([])
+  const dataLoad2 = ref([])
+
+  const emits = defineEmits(['data'])
+
+  onMounted(async () => {
+    user.value = props.user.data()
+    console.log(emits('data'))
+
+    managerData()
+  })
+
+  const categoryList = ref(true)
+
+  function category () {
+    if (categoryList.value === false) categoryList.value = true
+    else categoryList.value = false
+  }
+
+  async function managerData() {
+    const querySnapshot = await getDocs(largeCategory)
+    
+    let managerDataPut = []
+
+    querySnapshot.forEach((doc) => {
+      if (doc.data().owner === localStorage.getItem('blog')) {
+        managerDataPut.push(doc.data())
+      }
+    })
+    dataLoad.value = managerDataPut.sort(function(a, b) {
+      return b.createdAt - a.createdAt
+    })
+
+    managerData2()
+
+    console.log(dataLoad.value)
+  }
+
+  async function managerData2() {
+    const querySnapshot = await getDocs(smallCategory)
+
+    let managerDataPut = []
+
+    querySnapshot.forEach((doc) => {
+      if (doc.data().owner === localStorage.getItem('blog')) {
+        managerDataPut.push(doc.data())
+      }
+    })
+    dataLoad2.value = managerDataPut.sort(function(a, b) {
+      return b.createdAt - a.createdAt
+    })
+
+    console.log(dataLoad2.value)
+  }
 </script>
 
 <template>
@@ -20,21 +73,21 @@ function category () {
       <figure>
         <img src="@/assets/image/paca.jpeg" alt="프로필" />
         <figcaption>
-          <h4>닉네임</h4>
-          <h5>junhyeok403@naver.com</h5>
+          <h4>{{ user.nick }}</h4>
+          <h5>{{ user.email }}</h5>
         </figcaption>
       </figure>
     </article>
 
     <article class="main_side_information">
-      <em>안녕하세요 언제나 코딩을 하며 즐겁게 하루하루를 살아가는 코딩러 입니다. 자기소개부분</em>
-      <span>프로필 변경</span>
+      <em>{{ user.description }}</em>
+      <router-link :to="`/information/${user._uid}`">프로필 변경</router-link>
     </article>
 
     <article class="main_side_management">
       <ul class="management">
-        <li>글쓰기</li>
-        <li>관리 통계</li>
+        <li><router-link to="/editor">글쓰기</router-link></li>
+        <li><router-link :to="`/manager/${user._uid}`">관리 통계</router-link></li>
       </ul>
     </article>
 
@@ -49,19 +102,20 @@ function category () {
 
         <div class="main_category_contents" v-if="categoryList">
           <ul class="category">
-            <li class="depth1 depth_active">
-              <router-link to="/">전체보기(61)</router-link>
-            </li>
             <li class="depth1">
-              <router-link to="/">일상(10)</router-link>
+              <router-link to="/" class="depth_active">전체보기(61)</router-link>
             </li>
+
             <hr />
-            <li class="depth1">
-              <router-link to="/">뎁스1(50)</router-link>
+
+            <li v-for="(item, i) of dataLoad" :key="'a' + i">
+              <div class="large_category" :class="i === selectColor ? 'select' : ''">{{item.category}}</div>
+
+              <div class="small_category" v-for="(item2, j) of dataLoad2" :key="'b' + j" >
+                <div v-if="item._uid === item2.parent">{{item2.category}}</div>
+              </div>
             </li>
-            <li class="depth2">
-              <router-link to="/">뎁스2(0)</router-link>
-            </li>
+
           </ul>
         </div>
       </div>

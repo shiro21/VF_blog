@@ -1,0 +1,40 @@
+@import '@/assets/_color.scss';
+
+#manager {}
+
+#manager_contents::v-deep {
+  > h2 { font-size: 2rem; }
+
+  .input_wrap {
+    width: 100%;
+    margin-bottom: 1rem;
+    > input {
+      width: 250px;
+      height: 48px;
+      border: 1px solid $color_DDD;
+      border-radius: 10px;
+      padding: 0 .8rem;
+      margin-right: 1rem;
+    }
+    > button {
+      width: 100px;
+      height: 48px;
+      border: 1px solid $main_color;
+      border-radius: 10px;
+    }
+  }
+
+  .category_wrap {
+    .category_list {
+      > li {
+        > span {
+          .large_category {
+            font-size: .9rem;
+            font-weight: 700;
+          }
+          .select { color: $main_color; }
+        }
+      }
+    }
+  }
+}

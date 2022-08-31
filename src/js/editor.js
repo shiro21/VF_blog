@@ -6,8 +6,14 @@ import '@toast-ui/editor/dist/i18n/ko-kr'
 import { collection } from "firebase/firestore";
 import { db } from '@/js/db'
 
+const defaultImage = "/img/paca.f07159b0.png"
+
+const userUpdate = collection(db, "users")
+
 const useEditor = collection(db, "editors")
 
 const editorTest = collection(db, "test")
 
-export { Editor, Viewer, useEditor, editorTest }
+const editorConfirm = collection(db, "edit")
+
+export { Editor, Viewer, useEditor, editorTest, editorConfirm, userUpdate, defaultImage }

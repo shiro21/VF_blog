@@ -113,7 +113,7 @@
 
   .main_side_information {
     font-size: .8rem;
-    > span { display: block; font-weight: 700; padding-top: .22rem; }
+    > a { display: block; font-weight: 700; padding-top: .22rem; }
   }
 
   .main_side_management {
@@ -146,9 +146,20 @@
         .category {
           font-size: .8rem;
           line-height: 2;
+          > li {
+            cursor: pointer;
+            .large_category {
+              font-size: .8rem;
+              font-weight: 700;
+              &:hover { color: $main_color; }
+            }
+            .small_category {
+              &:hover { color: $main_color; }
+            }
+          }
           .depth1 {}
           .depth2 {}
-          .depth_active { font-weight: 700; }
+          .depth_active { color: $main_color; }
         }
       }
     }

@@ -1,10 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import store from '@/js/store'
 import { auth } from '@/js/firebase'
-import { db } from '@/js/db'
 
-import { collection, getDocs } from "firebase/firestore";
+  const props = defineProps(['user', 'msg'])
+  const user = ref({})
 
 
   onMounted(() => {
@@ -15,39 +15,11 @@ import { collection, getDocs } from "firebase/firestore";
   })
 
   onMounted(async () => {
-
-    const querySnapshot = await getDocs(collection(db, "users"))
-
-    let loginData = []
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data())
-      if (doc.data().id === localStorage.getItem('blog')) {
-        if (doc.data().profile !== '') {
-          const userData = {
-            email: doc.data().email,
-            id: doc.data().id,
-            nick: doc.data().nick,
-            profile: doc.data().profile,
-            _uid: doc.id
-          }
-          loginData.push(userData)
-        } else {
-          const userData = {
-            email: doc.data().email,
-            id: doc.data().id,
-            nick: doc.data().nick,
-            profile: '/img/paca.f07159b0.png',
-            _uid: doc.id
-          }
-          loginData.push(userData)
-        }
-      }
-    });
-    user.value = loginData
+    console.log(props.user)
+    user.value = props.user.data()
+    console.log(user.value)
   })
 
-  const user = ref([])
   const menuList = ref(false)
   const profileList = ref(false)
   const loginList = ref(false)
@@ -78,11 +50,11 @@ function close () {
         <div class="menu_card" v-if="menuList && loginList">
           <div class="profile">
             <!-- <img src="@/assets/image/paca.png" alt="프로필" /> -->
-            <img :src="user[0].profile" alt="프로필" />
+            <img :src="user.profile" alt="프로필" />
           </div>
           <div class="information">
-            <div class="nickname"><em><router-link :to="`/information/${user[0]._uid}`">{{user[0].nick}}</router-link></em></div>
-            <div class="email">{{user[0].email}}</div>
+            <div class="nickname"><em><router-link :to="`/information/${user._uid}`">{{user.nick}}</router-link></em></div>
+            <div class="email">{{user.email}}</div>
             <button @click="store.dispatch('logout')">로그아웃</button>
           </div>
         </div>

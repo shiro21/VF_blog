@@ -1,5 +1,6 @@
 <script setup>
-import EditorComponent from '@/components/editors/EditorComponent.vue'
+// import EditorComponent from '@/components/editors/EditorComponent.vue'
+import EditorComponent from '@/components/editors/EditorComponent2.vue'
 
 </script>
 

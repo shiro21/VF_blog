@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from 'firebase/auth'
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc, doc, getDocs } from "firebase/firestore";
 import { db } from '@/js/db'
 
 export default createStore({
@@ -43,10 +43,16 @@ export default createStore({
 
         return
       }
-
+      
       commit('SET_USER', auth.currentUser)
-      localStorage.setItem('blog', auth.currentUser.uid)
-      // console.log(auth.currentUser)
+
+      const querySnapshot = await getDocs(collection(db, "users"))
+
+      querySnapshot.forEach(doc => {
+        if (doc.data().id === auth.currentUser.uid) {
+          localStorage.setItem('blog', doc.data()._uid)
+        }
+      })
 
       router.push('/')
     },
@@ -56,7 +62,6 @@ export default createStore({
 
       try {
         await createUserWithEmailAndPassword(auth, id, pass)
-        console.log(auth)
         const authId = auth.currentUser.uid
 
         await addDoc(collection(db, "users"), {
@@ -69,6 +74,18 @@ export default createStore({
           createdAt: new Date(),
           isDeleted: false
         })
+        .then(async docRef => {
+          await updateDoc(doc(db, "users", docRef.id), {
+            _uid: docRef.id
+          })
+
+          localStorage.setItem('blog', docRef.id)
+
+          commit('SET_USER', auth.currentUser)
+
+          router.push('/')
+        })
+        .catch(err => console.log(err))
 
       } catch (err) {
         switch (err.code) {
@@ -92,10 +109,7 @@ export default createStore({
         return
       }
 
-      commit('SET_USER', auth.currentUser)
-      localStorage.setItem('blog', auth.currentUser.uid)
 
-      router.push('/')
     },
     async logout ({ commit }) {
       await signOut(auth)
