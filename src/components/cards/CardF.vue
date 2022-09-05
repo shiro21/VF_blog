@@ -1,18 +1,29 @@
 <script setup>
-import { } from 'vue'
+import { onMounted, defineProps } from 'vue'
+import router from '@/js/routes'
 
+  const props = defineProps({
+    items: {}
+  })
+  onMounted(async () => {
+  })
+
+  const moveViewer = () => {
+    router.push(`/viewer/${props.items._uid}`)
+  }
 </script>
 
 <template>
-  <div id="card_first">
+  <div id="card_first" @click="moveViewer">
     <div class="card_image">
-      <img src="@/assets/image/paca.png" alt="카드 이미지 - 제목">
+      <img v-if="!props.items.image" src="@/assets/image/paca.png" alt="카드 이미지 - 제목">
+      <img v-if="props.items.image" :src="props.items.image" alt="카드 이미지 - 제목">
     </div>
     <div class="card_title">
-      안녕하세요 첫 게시물입니다.
+      {{props.items.title}}
     </div>
     <div class="card_created">
-      2022.08.17 <em>댓글 3</em>
+      {{props.items.createdAt.toDate().toLocaleTimeString('ko')}} <em>댓글 3</em>
     </div>
   </div>
 </template>

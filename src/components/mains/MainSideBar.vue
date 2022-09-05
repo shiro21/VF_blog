@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, defineProps, defineEmits } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import { largeCategory, smallCategory } from '@/js/manager'
 import { getDocs } from '@firebase/firestore';
 
@@ -9,11 +9,9 @@ import { getDocs } from '@firebase/firestore';
   const dataLoad = ref([])
   const dataLoad2 = ref([])
 
-  const emits = defineEmits(['data'])
 
   onMounted(async () => {
     user.value = props.user.data()
-    console.log(emits('data'))
 
     managerData()
   })
@@ -41,7 +39,7 @@ import { getDocs } from '@firebase/firestore';
 
     managerData2()
 
-    console.log(dataLoad.value)
+    // console.log(dataLoad.value)
   }
 
   async function managerData2() {
@@ -58,7 +56,7 @@ import { getDocs } from '@firebase/firestore';
       return b.createdAt - a.createdAt
     })
 
-    console.log(dataLoad2.value)
+    // console.log(dataLoad2.value)
   }
 </script>
 

@@ -6,13 +6,13 @@ import { onMounted, ref } from 'vue'
 import { db } from '@/js/db';
 import { collection, getDoc, doc } from '@firebase/firestore';
 
-const fsDoc = doc(collection(db, "users"), localStorage.getItem('blog'))
 const user = ref()
-const msg = ref('dasdas')
 
 onMounted(async () => {
-  user.value = await getDoc(fsDoc)
-  console.log(user.value.data())
+  if (localStorage.getItem('blog')) {
+    const fsDoc = doc(collection(db, "users"), localStorage.getItem('blog'))
+    user.value = await getDoc(fsDoc)
+  }
 })
 
 </script>
@@ -25,7 +25,7 @@ onMounted(async () => {
         <MainHeader :user="user" />
 
         <div class="main_section">
-          <MainSideBar :user="user" :msg="msg" />
+          <MainSideBar :user="user" />
           <MainContents />
         </div>
         

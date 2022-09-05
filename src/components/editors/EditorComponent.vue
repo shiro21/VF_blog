@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, reactive, watch } from 'vue'
-import { Editor } from '@/js/editor'
+import { Editor, editorConfirm } from '@/js/editor'
 import { addDoc } from '@firebase/firestore'
-import { editorConfirm } from '@/js/editor'
 
   const editorRef = ref()
   const content = ref('')

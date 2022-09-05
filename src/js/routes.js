@@ -39,6 +39,14 @@ const router = createRouter({
       }
     },
     {
+      name : 'viewer',
+      path: "/viewer/:id",
+      component: () => import("@/pages/ViewerPage.vue"),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       name : 'manager',
       path: "/manager/:id",
       component: () => import("@/pages/ManagerPage.vue"),

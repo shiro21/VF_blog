@@ -14,6 +14,6 @@ const useEditor = collection(db, "editors")
 
 const editorTest = collection(db, "test")
 
-const editorConfirm = collection(db, "edit")
+const editorConfirm = collection(db, "edits")
 
 export { Editor, Viewer, useEditor, editorTest, editorConfirm, userUpdate, defaultImage }

@@ -5,12 +5,15 @@
   padding: .5rem;
   cursor: pointer;
   .card_image {
+    width: 100%;
+    height: 180px;
+    margin-bottom: .8rem;
     > img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
   }
-  .card_title { font-size: .8rem; }
+  .card_title { font-size: .8rem; font-weight: 700; }
   .card_created { font-size: .7rem; color: $color_7575; }
 }

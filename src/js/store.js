@@ -125,8 +125,12 @@ export default createStore({
 
       auth.onAuthStateChanged(async user => {
         console.log('fetchUser')
-
+        console.log(user)
         if (user === null) {
+          router.push('/login')
+          commit('CLEAR_USER')
+        } else if (!localStorage.getItem('blog')) {
+          router.push('/login')
           commit('CLEAR_USER')
         } else {
           commit('SET_USER', user)

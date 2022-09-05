@@ -11,5 +11,6 @@ import EditorComponent from '@/components/editors/EditorComponent2.vue'
 </template>
 
 <style scoped lang='scss'>
+@import '@/assets/edit.scss';
 
 </style>

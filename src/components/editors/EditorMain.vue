@@ -5,10 +5,12 @@ import { uploadFile } from '@/js/db'
 
   const editor = ref()
   const editorRef = ref()
+  const imageArray = ref([])
   const props = defineProps({
-    textEditor: String
+    textEditor: String,
+    mainImage: String
   })
-  const emits = defineEmits(['update:textEditor', 'addImage', 'fileChange'])
+  const emits = defineEmits(['update:textEditor', 'update:mainImage'])
 
 
   onMounted(() => {
@@ -38,21 +40,40 @@ import { uploadFile } from '@/js/db'
 
   const addImageBlobHook = async (blob, callback) => {
 
-    let files = blob
-    console.log(files)
-    if (!files.length) return
-    const { snapshot, downloadUrl, metadata } = await uploadFile(files)
+    if (!blob) return
+    // const { snapshot, downloadUrl, metadata } = await uploadFile(blob)
+    const { downloadUrl } = await uploadFile(blob)
 
-    emits('fileChange', snapshot, downloadUrl, metadata)
+    imageArray.value.push(downloadUrl)
+    console.log(imageArray.value)
+    // emits('update:mainImage', downloadUrl)
 
-    callback(downloadUrl, 'alt text');
+    // emits('update:addImage', snapshot, downloadUrl, metadata)
+
+    callback(downloadUrl, 'alt text')
     return false;
+  }
+
+  const imageSelect = (item) => {
+    console.log(item)
+
+    emits('update:mainImage', item)
   }
 
 </script>
 
 <template>
   <div id="editor" ref="editorRef" />
+
+  <div class="preview" v-if="imageArray.length > 0">
+    <h2>대표 이미지 선택하기</h2>
+    <div class="image_wrap">
+      <div class="image_box" v-for="(item, i) of imageArray" :key="'a' + i">
+        <img @click="imageSelect(item)" :src="item" alt="대표 이미지" />
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <style scoped lang='scss'>

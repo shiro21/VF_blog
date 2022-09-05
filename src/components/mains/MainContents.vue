@@ -1,5 +1,25 @@
 <script setup>
 import CardF from '@/components/cards/CardF.vue'
+import { onMounted, ref } from 'vue';
+import { getDocs } from '@firebase/firestore'
+import { editorConfirm } from '@/js/editor'
+
+  const items = ref({})
+  onMounted(async () => {
+    const querySnapshot = await getDocs(editorConfirm)
+
+    let editorPut = []
+
+    querySnapshot.forEach(doc => {
+      editorPut.push(doc.data())
+    })
+
+    items.value = editorPut.sort(function(a, b) {
+      return b.createdAt - a.createdAt
+    })
+
+    console.log(items.value)
+  })
 
 </script>
 
@@ -52,7 +72,7 @@ import CardF from '@/components/cards/CardF.vue'
     <article class="main_contents_card">
       <h3><em>나의 닉네임</em> 30개의 글</h3>
       <div class="card_list">
-        <CardF v-for="item of [0,1,2,3,4]" :key="item" />
+        <CardF :items="item" v-for="(item, i) of items" :key="'a' + i" />
       </div>
     </article>
   </main>
